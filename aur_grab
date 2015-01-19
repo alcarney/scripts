@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# Fucntion to ensure that the package name exists
+test_url ()
+{
+    response=$(curl -I -s $1 | head -n 1 | awk '/404/ {print 404;} /200/ {print 200;}')
+    echo $response
+}
+
+
+# Construct the URL for the package
+url=https://aur.archlinux.org/packages/$(echo $1 | cut -c 1-2)/$1/${1}.tar.gz
+res=$(test_url $url)
+#echo $res
+
+if [[ $res -eq 404 ]]; then
+    echo "Sorry the package you specified doesn't exist in the AUR"
+    exit
+elif [[ $res -eq 200 ]]; then
+
+    # Package exists, grab it!
+    wget $url
+    exit
+fi
+
+# If this code runs then our test_url function doesn't know what happened
+echo "We don't know if we're coming or going"
