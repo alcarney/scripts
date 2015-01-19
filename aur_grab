@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# A little script to easily grab packages from the AUR, it's far from bullet proof and I may
+# expand upon it later
+
 # Fucntion to ensure that the package name exists
 test_url ()
 {
